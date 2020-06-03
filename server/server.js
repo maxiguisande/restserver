@@ -1,8 +1,10 @@
 require('./config/config')
 
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+//Inicializamos Express
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -11,40 +13,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', (req, res) => {
-    res.json('Get Usuario')
-})
+//Importamos rutas del usuario
+app.use(require('./routes/usuario'))
 
-app.post('/usuario', (req, res) => {
-    let usuario = req.body;
+// Conectamos con MongoDB
+mongoose.connect('mongodb://localhost:27017/cafe', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}, (err, resp)=>{
+    if (err) throw err;
+    console.log('Base de datos ONLINE!!');
+});
 
-    if (usuario.nombre) {
-        res.json(201,{
-            ok:true,
-            usuario
-        })
-    }else{
-        res.json(400,{
-            ok: false,
-            message: "El nombre es obligatorio"
-        })
-    }
-    
-})
-
-app.put('/usuario/:id', (req, res) => {
-    let id = req.params.id;
-
-    res.json({
-        id,
-        message: "Put Usuario"
-    })
-})
-
-app.delete('/usuario', (req, res) => {
-    res.json('Delete Usuario')
-})
-
+//Levantamos el Server
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto', process.env.PORT);
 });
