@@ -10,14 +10,14 @@ app.post('/login', (req, res) => {
     Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
         //Mostramos error
         if (err) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err
             })
         }
         //Si no encuentra el usuario lo informamos
         if (!usuarioDB) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err: {
                     message: "(Usuario) y/o Contraseña Incorrecta"
@@ -27,7 +27,7 @@ app.post('/login', (req, res) => {
         //Mensaje para contraseña incorrecta
         //Comparamos los hash de las contraseñas
         if (!bcrypt.compareSync(body.password, usuarioDB.password)) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err: {
                     message: "Usuario y/o (Contraseña) Incorrecta"
@@ -39,7 +39,7 @@ app.post('/login', (req, res) => {
         // 60 seg 60 min 24 hs 30 dias --> el token vence en 30 dias
         let token = jwt.sign({
             usuario: usuarioDB
-        }, 'este-es-el-seed-dev', { expiresIn: 60 * 60 * 24 * 30  })
+        }, process.env.SEED, { expiresIn: 60 * 60 * 24 * 30  })
 
         //Si pasa las validaciones devolvemos el usuario
         res.json({

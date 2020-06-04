@@ -2,10 +2,10 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
+const { verificaToken, verificaRol } = require('../middlewares/autenticacion')
 const app = express();
 
-
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificaToken, (req, res) => {
     // parametros de URL
     let desde = req.query.desde || 0;
     let limite = req.query.limite || 5;
@@ -23,7 +23,7 @@ app.get('/usuario', (req, res) => {
         .skip(desde)
         .exec((err, usuarios) => {
             if (err) {
-                return res.json(400, {
+                return res.status(400).json({
                     ok: false,
                     err
                 })
@@ -37,12 +37,10 @@ app.get('/usuario', (req, res) => {
                 })
             })
         })
-
-
 })
 
 //Insertamos datos en la coleccion Usuarios
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificaRol], (req, res) => {
     let body = req.body;
 
     // creamos el modelo suando encriptacion de password
@@ -54,26 +52,25 @@ app.post('/usuario', (req, res) => {
         rol: body.rol
     });
 
+    //Guarda usuario en base de datos
     usuario.save((err, usuarioDB) => {
         if (err) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err
             })
         }
 
-        res.json(201, {
+        res.status(201).json({
             ok: true,
             usuario: usuarioDB
         })
 
     })
-
-
 })
 
 // Modificar datos del usuario
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
     let options = {
         new: true,
@@ -87,27 +84,27 @@ app.put('/usuario/:id', (req, res) => {
     Usuario.findByIdAndUpdate(id, body, options, (err, usuarioDB) => {
 
         if (err) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err
             })
         }
 
-        res.json(200, {
+        res.status(200).json({
             ok: true,
             usuarioDB
         })
     })
 })
 
-app.delete('/usuario/:id', (req, res) => {
-
+app.delete('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
+    //recupero el ID que viene por URL
     let id = req.params.id;
     //Cambio de estado
     let body = {
         estado: false
     }
-
+    //Configuro las opciones
     let options = {
         new: true
     }
@@ -115,43 +112,17 @@ app.delete('/usuario/:id', (req, res) => {
     Usuario.findByIdAndUpdate(id, body, options, (err, usuarioDB) => {
 
         if (err) {
-            return res.json(400, {
+            return res.status(400).json({
                 ok: false,
                 err
             })
         }
 
-        res.json(200, {
+        res.status(200).json({
             ok: true,
             usuarioDB
         })
     })
-
-    /*
-    //Eliminar registro de forma fisica
-    Usuario.findByIdAndRemove(id, (err, usuarioEliminado)=>{
-        if (err) {
-            return res.json(400, {
-                ok: false,
-                err
-            })
-        }
-
-        if (!usuarioEliminado) {
-            return res.json(400, {
-                ok: false,
-                err:{
-                    message: 'Usuario no encontrado'
-                }
-            })
-        }
-
-        res.json(200, {
-            ok: true,
-            usuario: usuarioEliminado
-        })
-    })
-    */
 })
 
 module.exports = app;
