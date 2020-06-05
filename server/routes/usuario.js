@@ -14,10 +14,10 @@ app.get('/usuario', verificaToken, (req, res) => {
     limite = Number(limite);
     //filtro por estado
     let filtro = {
-        estado: true
-    }
-    //Obtenemos los datos con los filtros aplicados
-    //el segundo parametro son los campos que voy a obtener
+            estado: true
+        }
+        //Obtenemos los datos con los filtros aplicados
+        //el segundo parametro son los campos que voy a obtener
     Usuario.find(filtro, 'nombre email img estado google')
         .limit(limite)
         .skip(desde)
@@ -40,7 +40,7 @@ app.get('/usuario', verificaToken, (req, res) => {
 })
 
 //Insertamos datos en la coleccion Usuarios
-app.post('/usuario', [verificaToken, verificaRol], (req, res) => {
+app.post('/usuario', (req, res) => {
     let body = req.body;
 
     // creamos el modelo suando encriptacion de password
@@ -102,13 +102,13 @@ app.delete('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
     //Cambio de estado
     let body = {
-        estado: false
-    }
-    //Configuro las opciones
+            estado: false
+        }
+        //Configuro las opciones
     let options = {
-        new: true
-    }
-    //Eliminar registro de forma logica
+            new: true
+        }
+        //Eliminar registro de forma logica
     Usuario.findByIdAndUpdate(id, body, options, (err, usuarioDB) => {
 
         if (err) {
