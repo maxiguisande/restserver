@@ -71,8 +71,7 @@ async function verify(token) {
     }
 }
 
-//
-
+// Login Google
 app.post('/google', async(req, res) => {
     //Recibimos el Token
     let token = req.body.idtoken;
