@@ -32,7 +32,7 @@ let usuarioSchema = new Schema({
         type: String,
         default: 'USER_ROL',
         enum: rolesValidos
-    }, 
+    },
     estado: {
         type: Boolean,
         default: true
@@ -40,6 +40,10 @@ let usuarioSchema = new Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    firstTime: {
+        type: Boolean,
+        default: true
     }
 });
 
@@ -50,7 +54,7 @@ usuarioSchema.plugin(uniqueValidator, {
 
 //Modificamos el objeto para sacar la propiedad password
 // no usamos una arrow function pq necesitamos el this
-usuarioSchema.methods.toJSON = function () {
+usuarioSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
     delete userObject.password;
