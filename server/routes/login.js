@@ -6,7 +6,7 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const Usuario = require('../models/usuario');
 const app = express();
-
+//Login normal con user y pass
 app.post('/login', (req, res) => {
     let body = req.body;
     //Buscamos el usuario
@@ -144,9 +144,7 @@ app.post('/google', async(req, res) => {
 
 })
 
-
 //Config de Google
-
 async function verify(token) {
     const ticket = await client.verifyIdToken({
         idToken: token,

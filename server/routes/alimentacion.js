@@ -25,9 +25,8 @@ app.get('/alimentacion', verificaToken, (req, res) => {
 })
 
 //crea una Alimentacion
-app.post('/alimentacion', verificaToken, (req, res) => {
+app.post('/alimentacion', [verificaToken, verificaRol], (req, res) => {
     let body = req.body;
-
     // Creamon una instancia de Alimentacion
     let Alimentacion = new Alimentacion({
         descripcion: body.descripcion
@@ -58,7 +57,7 @@ app.post('/alimentacion', verificaToken, (req, res) => {
 })
 
 // Modificar datos de la alimentacion
-app.put('/alimentacion/:id', verificaToken, (req, res) => {
+app.put('/alimentacion/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
     let body = {
         descripcion: req.body.descripcion
@@ -91,7 +90,6 @@ app.put('/alimentacion/:id', verificaToken, (req, res) => {
         })
     })
 })
-
 
 // Modificar datos de la alimentacion
 app.delete('/alimentacion/:id', [verificaToken, verificaRol], (req, res) => {

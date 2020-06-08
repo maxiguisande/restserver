@@ -42,7 +42,6 @@ app.get('/usuario', verificaToken, (req, res) => {
 //Insertamos datos en la coleccion Usuarios
 app.post('/usuario', (req, res) => {
     let body = req.body;
-
     // creamos el modelo suando encriptacion de password
     // de una sola via de manera sync
     let usuario = new Usuario({
@@ -50,9 +49,9 @@ app.post('/usuario', (req, res) => {
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
         rol: body.rol,
-        img: body.img
+        img: body.img,
+        alimentacion: body.alimentacion
     });
-
     //Guarda usuario en base de datos
     usuario.save((err, usuarioDB) => {
         if (err) {

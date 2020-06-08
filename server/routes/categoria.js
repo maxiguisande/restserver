@@ -45,7 +45,7 @@ app.get('/categoria/:id', verificaToken, (req, res) => {
 })
 
 //crea una categoria
-app.post('/categoria', verificaToken, (req, res) => {
+app.post('/categoria', [verificaToken, verificaRol], (req, res) => {
     let body = req.body;
 
     // Creamon una instancia de categoria
@@ -80,7 +80,7 @@ app.post('/categoria', verificaToken, (req, res) => {
 })
 
 // Modificar datos de la categoria
-app.put('/categoria/:id', verificaToken, (req, res) => {
+app.put('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
     let body = {
         descripcion: req.body.descripcion,

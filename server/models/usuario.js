@@ -44,7 +44,15 @@ let usuarioSchema = new Schema({
     firstTime: {
         type: Boolean,
         default: true
-    }
+    },
+    alimentacion: [{
+        descripcion: {
+            type: String
+        },
+        _id: {
+            type: Schema.Types.ObjectId
+        }
+    }]
 });
 
 //Agregamos mejora en el mensaje de error de email unico
