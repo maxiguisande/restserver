@@ -54,23 +54,6 @@ app.post('/login', (req, res) => {
     })
 })
 
-//Config de Google
-
-async function verify(token) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID
-    });
-    const payload = ticket.getPayload();
-
-    return {
-        nombre: payload.name,
-        email: payload.email,
-        img: payload.picture,
-        google: true
-    }
-}
-
 // Login Google
 app.post('/google', async(req, res) => {
     //Recibimos el Token
@@ -160,4 +143,23 @@ app.post('/google', async(req, res) => {
     })
 
 })
+
+
+//Config de Google
+
+async function verify(token) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+
+    return {
+        nombre: payload.name,
+        email: payload.email,
+        img: payload.picture,
+        google: true
+    }
+}
+
 module.exports = app;

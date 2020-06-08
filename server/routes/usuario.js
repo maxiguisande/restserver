@@ -49,7 +49,8 @@ app.post('/usuario', (req, res) => {
         nombre: body.nombre,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
-        rol: body.rol
+        rol: body.rol,
+        img: body.img
     });
 
     //Guarda usuario en base de datos
@@ -60,7 +61,14 @@ app.post('/usuario', (req, res) => {
                 err
             })
         }
-
+        //Por si no encontro el usuario
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                err
+            })
+        }
+        //Respuesta
         res.status(201).json({
             ok: true,
             usuario: usuarioDB
@@ -82,7 +90,6 @@ app.put('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
 
     //Actualizamos en registro en la base de datos
     Usuario.findByIdAndUpdate(id, body, options, (err, usuarioDB) => {
-
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -90,6 +97,14 @@ app.put('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
             })
         }
 
+        //Por si no encontro el usuario
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                err
+            })
+        }
+        // Respuesta
         res.status(200).json({
             ok: true,
             usuarioDB
@@ -112,6 +127,13 @@ app.delete('/usuario/:id', [verificaToken, verificaRol], (req, res) => {
     Usuario.findByIdAndUpdate(id, body, options, (err, usuarioDB) => {
 
         if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            })
+        }
+        //Por si no encontro el usuario
+        if (!usuarioDB) {
             return res.status(400).json({
                 ok: false,
                 err
