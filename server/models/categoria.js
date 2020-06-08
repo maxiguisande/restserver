@@ -5,12 +5,17 @@ const Schema = mongoose.Schema;
 let categoriaSchema = new Schema({
     descripcion: {
         type: String,
-        unique: true,
         required: [true, 'La descripcion es obligatoria']
     },
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario'
+    codigo: {
+        type: String,
+        unique: true,
+        required: [true, 'El codigo es obligatoria']
+    },
+    toxicidad: {
+        type: String,
+        unique: true,
+        required: [true, 'La toxicidad es obligatoria']
     }
 })
 

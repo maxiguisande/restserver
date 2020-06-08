@@ -46,13 +46,13 @@ app.get('/categoria/:id', verificaToken, (req, res) => {
 
 //crea una categoria
 app.post('/categoria', verificaToken, (req, res) => {
-    let idUsuario = req.usuario._id;
     let body = req.body;
 
     // Creamon una instancia de categoria
     let categoria = new Categoria({
-        usuario: idUsuario,
-        descripcion: body.descripcion
+        codigo: body.codigo,
+        descripcion: body.descripcion,
+        toxicidad: body.toxicidad
     });
 
     //Guarda categoria en base de datos
@@ -73,17 +73,18 @@ app.post('/categoria', verificaToken, (req, res) => {
         // devolvemos la categoria creada
         res.status(201).json({
             ok: true,
-            usuario: categoriaDB
+            categoria: categoriaDB
         })
 
     })
 })
 
-// Modificar datos del usuario
+// Modificar datos de la categoria
 app.put('/categoria/:id', verificaToken, (req, res) => {
     let id = req.params.id;
-    let catDescripcion = {
-        descripcion: req.body.descripcion
+    let body = {
+        descripcion: req.body.descripcion,
+        toxicidad: req.body.toxicidad
     };
     //Esto es para que devuelva el registro actualizado
     let options = {
@@ -91,7 +92,7 @@ app.put('/categoria/:id', verificaToken, (req, res) => {
         runValidators: true
     };
     //Actualizamos el registro en la base de datos
-    Categoria.findByIdAndUpdate(id, catDescripcion, options, (err, categoriaDB) => {
+    Categoria.findByIdAndUpdate(id, body, options, (err, categoriaDB) => {
 
         if (err) {
             return res.status(400).json({
@@ -115,7 +116,7 @@ app.put('/categoria/:id', verificaToken, (req, res) => {
 })
 
 
-// Modificar datos del usuario
+// Modificar datos de la categoria
 app.delete('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
     //Eliminamos el registro en la base de datos
