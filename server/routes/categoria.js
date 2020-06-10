@@ -22,8 +22,7 @@ app.get('/categoria', verificaToken, (req, res) => {
                 })
             })
         })
-})
-
+});
 //devuelve una categoria por ID
 app.get('/categoria/:id', verificaToken, (req, res) => {
     let id = req.params.id;
@@ -42,8 +41,7 @@ app.get('/categoria/:id', verificaToken, (req, res) => {
                 categoria
             })
         })
-})
-
+});
 //crea una categoria
 app.post('/categoria', [verificaToken, verificaRol], (req, res) => {
     let body = req.body;
@@ -77,8 +75,7 @@ app.post('/categoria', [verificaToken, verificaRol], (req, res) => {
         })
 
     })
-})
-
+});
 // Modificar datos de la categoria
 app.put('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
@@ -113,9 +110,7 @@ app.put('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
             categoriaDB
         })
     })
-})
-
-
+});
 // Modificar datos de la categoria
 app.delete('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
     let id = req.params.id;
@@ -133,7 +128,5 @@ app.delete('/categoria/:id', [verificaToken, verificaRol], (req, res) => {
             categoria: categoriaDB
         })
     })
-})
-
-
+});
 module.exports = app;
