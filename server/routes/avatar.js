@@ -40,8 +40,9 @@ app.post('/avatar', verificaToken, (req, res) => {
     };
     //Armo el nombre del archivo
     let nombreArchivo = `${id}-${new Date().getMilliseconds()}.${extension}`;
+    let pathImg = path.resolve(__dirname, `../../uploads/usuarios/`);
     //Subo el archivo
-    archivo.mv(`uploads/usuarios/${nombreArchivo}`, (err) => {
+    archivo.mv(`${pathImg}/${nombreArchivo}`, (err) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -101,7 +102,7 @@ function imagenUsuario(id, res, nombreArchivo) {
 
 function borraArchivo(nombreImagen, tipo) {
     //Armo el path de la imagen actual para luego eliminarla
-    let pathImg = path.resolve(__dirname, `../../uploads/${tipo}/${nombreImagen}`);
+    let pathImg = path.resolve(__dirname, `../../uploads/usuarios/${nombreImagen}`);
     //Si existe la imagen la elimino
     if (fs.existsSync(pathImg)) {
         fs.unlinkSync(pathImg);
