@@ -40,9 +40,8 @@ app.post('/avatar', verificaToken, (req, res) => {
     };
     //Armo el nombre del archivo
     let nombreArchivo = `${id}-${new Date().getMilliseconds()}.${extension}`;
-    let pathImg = path.resolve(__dirname, `../../uploads/usuarios/`);
     //Subo el archivo
-    archivo.mv(`${pathImg}/${nombreArchivo}`, (err) => {
+    archivo.mv(`uploads/usuarios/${nombreArchivo}`, (err) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
