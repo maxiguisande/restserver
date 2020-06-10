@@ -53,7 +53,7 @@ app.post('/avatar', verificaToken, (req, res) => {
     })
 });
 //Obtenemos el avatar del usuario
-app.get('/avatar/:img', verificaToken, (req, res) => {
+app.get('/avatar/:img', (req, res) => {
     //obtengo el tipo y nombre de imagen de la url
     let img = req.params.img || 'no-image';
     console.log(req.usuario);
