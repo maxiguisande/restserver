@@ -72,7 +72,7 @@ app.get('/avatar', verificaToken, (req, res) => {
             pathImg = path.resolve(__dirname, `../assets/no-image.png`);
         }
         //devuelvo la imagen
-        res.sendFile(pathImg);
+        res.status(200).sendFile(pathImg);
     })
 
 
