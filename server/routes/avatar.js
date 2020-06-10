@@ -53,18 +53,29 @@ app.post('/avatar', verificaToken, (req, res) => {
     })
 });
 //Obtenemos el avatar del usuario
-app.get('/avatar/:img', verificaToken, (req, res) => {
-    //obtengo el tipo y nombre de imagen de la url
-    let img = req.params.img || 'no-image';
-    console.log(req.usuario);
-    //Armo el path de la imagen actual para luego eliminarla
-    let pathImg = path.resolve(__dirname, `../../uploads/usuarios/${img}`);
-    //Si existe la imagen la elimino
-    if (!fs.existsSync(pathImg)) {
-        pathImg = path.resolve(__dirname, `../assets/no-image.png`);
-    }
-    //devuelvo la imagen
-    res.sendFile(pathImg);
+app.get('/avatar', verificaToken, (req, res) => {
+    let id = req.usuario._id;
+    Usuario.findById(id, (err, usuarioDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        };
+
+        //obtengo el tipo y nombre de imagen de la url
+        let img = usuarioDB.img || 'no-image';
+        //Armo el path de la imagen actual para luego eliminarla
+        let pathImg = path.resolve(__dirname, `../../uploads/usuarios/${img}`);
+        //Si existe la imagen la elimino
+        if (!fs.existsSync(pathImg)) {
+            pathImg = path.resolve(__dirname, `../assets/no-image.png`);
+        }
+        //devuelvo la imagen
+        res.sendFile(pathImg);
+    })
+
+
 })
 
 function imagenUsuario(id, res, nombreArchivo) {
