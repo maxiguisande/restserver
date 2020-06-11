@@ -53,8 +53,9 @@ app.post('/avatar', verificaToken, (req, res) => {
     })
 });
 //Obtenemos el avatar del usuario
-app.get('/avatar', verificaToken, (req, res) => {
-    let id = req.usuario._id;
+app.get('/avatar/:id', (req, res) => {
+    //let id = req.usuario._id;
+    let id = req.params.id;
     Usuario.findById(id, (err, usuarioDB) => {
         if (err) {
             return res.status(500).json({
