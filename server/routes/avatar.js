@@ -72,8 +72,10 @@ app.get('/avatar/:id', (req, res) => {
         if (!fs.existsSync(pathImg)) {
             pathImg = path.resolve(__dirname, `../assets/no-image.png`);
         }
+        //Devuelvo la imagen en base64
+        let bitmap = fs.readFileSync(pathImg);
         //devuelvo la imagen
-        res.status(200).sendFile(pathImg);
+        res.status(200).send(`data:image/jpg;base64,${Buffer(bitmap).toString('base64')}`);
     })
 
 
